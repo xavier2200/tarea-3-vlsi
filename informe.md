@@ -247,3 +247,17 @@ Tiempo de síntesis: 16.99 segundos
 Tiempo total: 348 segundos
 Memoria utilizada: 1,730.48 MB
 Eficiencia: Alta para diseño de esta complejidad
+
+# Punto 14
+
+El Standard Delay Format (SDF) es un estándar IEEE (IEEE 1497) ampliamente utilizado en el diseño electrónico para representar información de temporización en circuitos digitales. Se presenta en formato ASCII y es independiente de herramientas y lenguajes específicos, lo que facilita su interoperabilidad en diferentes etapas del flujo de diseño. El SDF describe retardos en componentes digitales como puertas lógicas, flip-flops e interconexiones, asegurando que el diseño cumpla con los requisitos de temporización. Al ser un formato común, permite la comunicación entre diversas herramientas de automatización de diseño electrónico (EDA), facilitando procesos como síntesis, simulación y análisis de temporización. Se utiliza tanto para la anotación hacia atrás (back-annotation), incorporando datos de temporización post-layout en simulaciones, como para la anotación hacia adelante (forward-annotation), proporcionando información de temporización antes de la síntesis para guiar procesos de optimización. La estructura de un archivo SDF incluye una sección de encabezado con información general, definiciones de celdas e instancias con retardos asociados, retardos de trayectoria para rutas específicas en el circuito y verificaciones de temporización como tiempos de setup y hold. En resumen, el formato SDF es esencial para garantizar que los circuitos digitales funcionen correctamente bajo las condiciones de operación previstas, facilitando la verificación y optimización del diseño en diversas etapas del proceso de desarrollo.
+
+### Referencias:
+
+[1] logicmadness.com, “Standard Delay Format (SDF) | Everything you need to know,” logicmadness.com, Mar. 19, 2025. https://logicmadness.com/standard-delay-format-sdf/
+
+[2] “How to read SDF (Standard Delay Format) - Part1,” VLSI Concepts. https://www.vlsi-expert.com/2011/03/how-to-read-sdf-standard-delay-format.html
+
+[3] Admin, “Standard Delay Format (SDF),” ChipVerify, Oct. 27, 2024. https://www.chipverify.com/verilog/verilog-sdf
+
+[4] “SDF (Standard Delay Format),” VLSI Wiki. https://www.vlsi.kr/sdf-standard-delay-format_english
