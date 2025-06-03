@@ -97,11 +97,79 @@ Como se puede observar son los resultados esperados, ya que:
 
 # Punto 12
 
-- Como primer paso el programa carga los scrips
-- Segundo paso, se lee el diseño
-- Tercer paso, se procede a elaborar el diseño
-- Cuarto paso, se leen los constraints, indica si los comandos ejecutados fueron exitosos o no.
-- Hace un mapeo a la tecnologia utilizada
-- Optimiza la sintesis
-- reporte de sintesis
-- archivos resultantes
+1. Inicialización
+
+Verifica licencias de Cadence Genus
+Carga scripts de herramientas (14 segundos)
+Configura rutas de bibliotecas y diseño
+Establece variables de entorno
+
+2. Lectura de Bibliotecas (read_libs)
+
+Lee biblioteca gpdk_tm_1p8v_25c.lib
+Crea condición operativa nominal (1.8V, 25°C)
+Detecta 4 advertencias de celdas sin área
+Asigna área 0 por defecto a celdas problemáticas
+
+3. Lectura del Diseño (read_hdl)
+
+Lee archivo counter.sv en SystemVerilog
+Verifica sintaxis del código RTL
+
+4. Elaboración (elaborate)
+
+Interpreta y expande el código RTL
+Crea representación interna del diseño
+Verifica redes analógicas y RTL fuente
+Ejecuta optimizaciones iniciales de multiplexores
+
+5. Lectura de Restricciones (read_sdc)
+
+Procesa archivo constraints_counter.sdc
+Aplica 1 reloj, restricciones de entrada/salida
+Configura incertidumbre de reloj
+Total: 16 comandos SDC procesados exitosamente
+
+6. Configuración de Esfuerzos
+
+syn_generic_effort = medium
+syn_map_effort = medium
+syn_opt_effort = medium
+
+7. Síntesis Genérica (syn_generic)
+
+Convierte RTL a compuertas genéricas
+Evalúa 8 configuraciones de datapath (c0-c7)
+Selecciona configuración "very_fast"
+Resultado: 14 → 12 instancias
+
+8. Mapeo a Tecnología (syn_map)
+
+Mapea compuertas genéricas a biblioteca específica
+Usa 3 celdas combinacionales + 1 secuencial
+Optimiza timing (slack objetivo: 258 ps, logrado: 8180 ps)
+Resultado: 12 → 18 instancias
+
+9. Optimización Incremental (syn_opt)
+
+Propaga constantes
+Elimina 1 inversor redundante
+Intenta 6 optimizaciones de área (sin éxito)
+Resultado final: 18 instancias
+
+10. Generación de Reportes
+
+Timing: Analiza 6 paths críticos
+Power: Análisis vectorless con motor Joules
+Área: Utilización de recursos
+QoR: Calidad de resultados
+
+11. Archivos de Salida
+
+counter_netlist.v: Netlist sintetizada
+counter_sdc.sdc: Restricciones de timing
+counter_synth.sdf: Delays para simulación
+
+# Punto 13
+
+En el archivo netlist, es donde encuentran todas las conexiones que se deben realizar en el esquematico.
