@@ -173,3 +173,77 @@ counter_synth.sdf: Delays para simulación
 # Punto 13
 
 En el archivo netlist, es donde encuentran todas las conexiones que se deben realizar en el esquematico.
+
+Características Principales del Diseño Counter
+
+Implementación Física
+Conteo de Instancias
+
+Total de instancias: 15
+Instancias secuenciales: 3 (20%)
+Instancias combinacionales: 12 (80%)
+Instancias físicas: 0
+Instancias jerárquicas: 0
+
+Área
+
+Área de celdas: 0.000 (biblioteca sin información de área)
+Área de nets: 0.000
+Área total: 0.000
+Modo wireload: enclosed (por defecto)
+
+Performance de Timing
+Configuración de Reloj
+
+Período de reloj: 10,000 ps (10 ns)
+Frecuencia equivalente: 100 MHz
+Critical path slack: +8,206.2 ps
+Total Negative Slack (TNS): 0.0 ps
+Paths violatorios: 0
+
+Análisis de Timing
+
+Timing extremadamente holgado con más de 8 ns de margen
+Sin violaciones de restricciones temporales
+Potencial para operar a frecuencias significativamente mayores
+
+Consumo de Potencia
+Distribución por Componentes
+
+Registros: 12.60 µW (67.06%)
+Lógica combinacional: 2.29 µW (12.20%)
+Red de reloj: 3.90 µW (20.75%)
+Consumo total: 18.79 µW
+
+Tipos de Potencia
+
+Potencia interna: 75.56%
+Potencia de switching: 24.44%
+Leakage: despreciable (0.00%)
+
+Conectividad y Complejidad
+Métricas de Fanout
+
+Fanout máximo: 3 (señal q_o[0])
+Fanout mínimo: 1 (señal n_0)
+Fanout promedio: 1.5
+
+Ratios de Conectividad
+
+Términos por net: 2.25
+Términos por instancia: 3.0
+
+Calidad de Síntesis
+Condiciones Operativas
+
+Biblioteca: tm_1p8v_25c
+Voltaje: 1.8V
+Temperatura: 25°C
+Modelo de timing: balanced_tree
+
+Performance del Proceso
+
+Tiempo de síntesis: 16.99 segundos
+Tiempo total: 348 segundos
+Memoria utilizada: 1,730.48 MB
+Eficiencia: Alta para diseño de esta complejidad
