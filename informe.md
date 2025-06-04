@@ -21,9 +21,9 @@ Se generó el layout del sistema cumpliendo con:
 - **Reloj en Metal 3:** Como especifica la tarea
 - **DRC y LVS:** Sin errores
 
-![Layout del Sistema](imagen_layout_ff.png)
+![Layout del Sistema](./figuras/imagen_layout_ff.png)
 
-![Vista Extraída (analog_extracted)](imagen_extracted.png)
+![Vista Extraída (analog_extracted)](./figuras/imagen_extracted.png)
 
 ## 2.2 Testbench para Caracterización
 
@@ -34,7 +34,7 @@ Se creó un testbench que incluye:
 - **Fuentes de alimentación:** VDD=1.8V, VSS=0V
 - **Estímulos:** Fuentes vpulse para CLK y D
 
-![Esquemático Testbench](imagen_testbench.png)
+![Esquemático Testbench](./figuras/agen_testbench.png)
 
 ### Configuración de Estímulos
 
@@ -46,7 +46,7 @@ Se creó un testbench que incluye:
 
 **Fuente de Datos (D):**
 - v1: 0V, v2: 1.8V
-- td: [VARIABLE] tdata
+- td: tdelay
 - tr/tf: 100ps
 - pw: 5ns, period: 10ns
 
@@ -73,16 +73,10 @@ Siguiendo la metodología del Insert-E de caracterización de celdas:
 
 ## 2.4 Resultados de Simulación
 
-### Simulación de Funcionamiento Básico
-![Formas de Onda - Funcionamiento Normal](imagen_waveforms_normal.png)
-
-## 2.4 Resultados de Simulación
-
-### Simulación de Funcionamiento Básico
-![Formas de Onda - Funcionamiento Normal](imagen_waveforms_normal.png)
-
 ### Barrido Paramétrico - Setup Time
-![Barrido Paramétrico Setup](imagen_parametric_setup.png)
+![Barrido Paramétrico Setup](./figuras/imagen_parametric_setup.png)
+
+![Barrido Paramétrico Setup_values](./figuras/imagen_parametric_setup_values.png)
 
 **Resultados del barrido paramétrico:**
 
@@ -102,7 +96,10 @@ Siguiendo la metodología del Insert-E de caracterización de celdas:
 - **tsetup estimado:** ~200-300 ps (basado en degradación del 5%)
 
 ### Barrido Paramétrico - Hold Time  
-![Barrido Paramétrico Hold](imagen_parametric_hold.png)
+![Barrido Paramétrico Hold](./figuras/imagen_parametric_hold.png)
+
+![Barrido Paramétrico Hold_values](./figuras/imagen_parametric_hold_values.png)
+
 
 **Configuración para Hold Time:**
 - **Rango:** 4.9ns a 5.1ns (20 puntos)
@@ -122,10 +119,6 @@ Siguiendo la metodología del Insert-E de caracterización de celdas:
 - **Rango operativo:** tdelay > 4.99ns funciona correctamente
 - **thold estimado:** ~10-15 ps
 
-### Medición de tpcq
-![Medición Propagation Delay](imagen_tpcq_measurement.png)
-
-**tpcq medido:** 786.4 ps (valor mínimo obtenido en condiciones óptimas)
 
 ## 2.5 Resultados Obtenidos
 
@@ -133,7 +126,7 @@ Siguiendo la metodología del Insert-E de caracterización de celdas:
 | Parámetro | Valor Medido | Unidad | Método |
 |-----------|--------------|--------|---------| 
 | tsetup    | ~250         | ps     | Degradación 5% en tpcq |
-| thold     | ~15          | ps     | Transición thold negativo→positivo |
+| thold     | ~15          | ps     | Degradación 5% en tpcq |
 | tpcq      | 786-889      | ps     | Delay 50% CLK → 50% Q |
 
 ### Comparación con Liberty
