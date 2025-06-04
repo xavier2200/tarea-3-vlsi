@@ -257,6 +257,26 @@ El Standard Delay Format (SDF) es un estándar IEEE (IEEE 1497) ampliamente util
 
 Se utiliza tanto para la anotación hacia atrás (back-annotation), incorporando datos de temporización post-layout en simulaciones, como para la anotación hacia adelante (forward-annotation), proporcionando información de temporización antes de la síntesis para guiar procesos de optimización. La estructura de un archivo SDF incluye una sección de encabezado con información general, definiciones de celdas e instancias con retardos asociados, retardos de trayectoria para rutas específicas en el circuito y verificaciones de temporización como tiempos de setup y hold. En resumen, el formato SDF es esencial para garantizar que los circuitos digitales funcionen correctamente bajo las condiciones de operación previstas, facilitando la verificación y optimización del diseño en diversas etapas del proceso de desarrollo.
 
+# Punto 15
+
+Según los resultados de los registros logs, el sistema presenta una serie de errores debido a la violación del tiempo de hold: 
+
+Los flip flops se ven afectados por estas violaciones del hold time. La ruta o el path del reset es demasiado rápida respecto al tiempo de llegada de la señal, causando que no se disponga de tiempo suficiente para estabilizar la señal a la salida. El tiempo de hold sufre una violación en aproximadamente 0.29 ns.
+
+Como posible solución para mitigar este efecto es la colocación de buffers a la entrada del circuito, relentizando la llegada de la señal y respetando asi el tiempo de hold. 
+
+Respecto al tiempo de setup este es correcto y se cumple dentro del sistema. 
+
+# Punto 16
+
+
+Al ejecutar la simulación con timing se observa que en la transición entre ciertos valores algunos bits de la salida no cumplen con los tiempos de hold lo que produce resultados indeseados en ciertos instantes como se puede ver en la siguiente imagen.
+
+Este efecto es el resultado de una violación del hold time lo que resulta en una estado de metaestabilidad, dando resultados inconsistentes dentro del sistema. 
+
+![image](./figuras/timing.png)
+
+
 ### Referencias:
 
 [1] logicmadness.com, “Standard Delay Format (SDF) | Everything you need to know,” logicmadness.com, Mar. 19, 2025. https://logicmadness.com/standard-delay-format-sdf/
@@ -266,3 +286,5 @@ Se utiliza tanto para la anotación hacia atrás (back-annotation), incorporando
 [3] Admin, “Standard Delay Format (SDF),” ChipVerify, Oct. 27, 2024. https://www.chipverify.com/verilog/verilog-sdf
 
 [4] “SDF (Standard Delay Format),” VLSI Wiki. https://www.vlsi.kr/sdf-standard-delay-format_english
+
+
