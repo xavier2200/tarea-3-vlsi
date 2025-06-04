@@ -96,9 +96,10 @@ Como se puede observar son los resultados esperados, ya que:
 - La frecuencia de operación del reloj es de 50Mhz 
 # Punto 11
 
+![image](./figuras/diagrama_estadpos.png)
+
 # Punto 12
 
-![image](./figuras/diagrama_estadpos.png)
 
 1. Inicialización
 
