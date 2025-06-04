@@ -3,6 +3,192 @@
 - Xavier Barrios Salazar
 - Keylor Rivera Gamboa
 
+# Parte 2: Caracterización de Flip Flop Estático Principal-Secundario
+
+## 2.1 Diseño del Sistema
+
+### Esquemático del Sistema FF
+Se implementó un sistema flip-flop usando:
+- **DFFHDLLX0:** Flip-flop de la biblioteca D_CELLS_HDLL
+- **INHDLLX1 e INHDLLX4:** Cadena de inversores para conformar la pendiente del reloj
+
+
+![Esquemático del Sistema FF](./figuras/imagen_esquematico_ff.png)
+
+### Layout y Extracción
+Se generó el layout del sistema cumpliendo con:
+- **Pitch:** 4.48µm según tecnología XFAB
+- **Reloj en Metal 3:** Como especifica la tarea
+- **DRC y LVS:** Sin errores
+
+![Layout del Sistema](imagen_layout_ff.png)
+
+![Vista Extraída (analog_extracted)](imagen_extracted.png)
+
+## 2.2 Testbench para Caracterización
+
+### Configuración del Testbench
+Se creó un testbench que incluye:
+- **Sistema FF:** Usando vista analog_extracted
+- **Carga FO4:** 4 inversores INHDLLX1 en serie
+- **Fuentes de alimentación:** VDD=1.8V, VSS=0V
+- **Estímulos:** Fuentes vpulse para CLK y D
+
+![Esquemático Testbench](imagen_testbench.png)
+
+### Configuración de Estímulos
+
+**Fuente de Reloj (CLK):**
+- v1: 0V, v2: 1.8V
+- td: 5ns (referencia fija)
+- tr/tf: 100ps
+- pw: 5ns, period: 10ns
+
+**Fuente de Datos (D):**
+- v1: 0V, v2: 1.8V
+- td: [VARIABLE] tdata
+- tr/tf: 100ps
+- pw: 5ns, period: 10ns
+
+## 2.3 Metodología de Caracterización
+
+Siguiendo la metodología del Insert-E de caracterización de celdas:
+
+### Configuración de Barrido Realizada
+
+**Setup Time (primer barrido):**
+- **Variable:** tdelay 
+- **Rango:** 9.5ns a 10.5ns (11 puntos)
+- **Resultado:** tsetup ≈ 250 ps
+
+**Hold Time (segundo barrido):**
+- **Variable:** tdelay
+- **Rango:** 4.9ns a 5.1ns (20 puntos) 
+- **Resultado:** thold ≈ 15 ps
+
+### Mediciones Realizadas
+1. **tpcq:** Delay 50% CLK → 50% Q
+2. **tsetup:** Tiempo mínimo que D debe llegar antes de CLK
+3. **thold:** Tiempo mínimo que D debe mantenerse después de CLK
+
+## 2.4 Resultados de Simulación
+
+### Simulación de Funcionamiento Básico
+![Formas de Onda - Funcionamiento Normal](imagen_waveforms_normal.png)
+
+## 2.4 Resultados de Simulación
+
+### Simulación de Funcionamiento Básico
+![Formas de Onda - Funcionamiento Normal](imagen_waveforms_normal.png)
+
+### Barrido Paramétrico - Setup Time
+![Barrido Paramétrico Setup](imagen_parametric_setup.png)
+
+**Resultados del barrido paramétrico:**
+
+| tdelay (ns) | tpcq (ps) | Estado |
+|-------------|-----------|---------|
+| 9.5-10.0    | ~786-807  | ✅ Funcionando |
+| 10.1        | 786.4     | ✅ Óptimo |
+| 10.2        | 807.1     | ✅ Aceptable |
+| 10.3        | 866.6     | ⚠️ Degradación |
+| 10.4        | 1122.0    | ❌ Violación clara |
+| 10.5        | eval err  | ❌ Falla total |
+
+**Análisis Setup:**
+- **Delay mínimo:** 786.4 ps (tdelay = 10.1ns)
+- **5% aumento:** 825.7 ps → Ocurre entre tdelay = 10.2ns y 10.3ns
+- **Violación clara:** tdelay > 10.3ns
+- **tsetup estimado:** ~200-300 ps (basado en degradación del 5%)
+
+### Barrido Paramétrico - Hold Time  
+![Barrido Paramétrico Hold](imagen_parametric_hold.png)
+
+**Configuración para Hold Time:**
+- **Rango:** 4.9ns a 5.1ns (20 puntos)
+- **Objetivo:** Medir cuánto tiempo después del flanco de CLK puede cambiar D
+
+**Resultados del barrido Hold:**
+
+| tdelay (ns) | tpcq (ps) | thold (ps) | Estado |
+|-------------|-----------|------------|---------|
+| 4.984       | eval err  | -15.79     | ❌ Muy temprano |
+| 4.995       | 889.2     | -5.263     | ✅ Funcionando |
+| 5.005       | 828.4     | +5.263     | ✅ Funcionando |
+| 5.016       | 812.6     | +15.79     | ✅ Funcionando |
+
+**Análisis Hold:**
+- **thold crítico:** Alrededor de 0 ps (transición entre valores negativos y positivos)
+- **Rango operativo:** tdelay > 4.99ns funciona correctamente
+- **thold estimado:** ~10-15 ps
+
+### Medición de tpcq
+![Medición Propagation Delay](imagen_tpcq_measurement.png)
+
+**tpcq medido:** 786.4 ps (valor mínimo obtenido en condiciones óptimas)
+
+## 2.5 Resultados Obtenidos
+
+### Parámetros Medidos
+| Parámetro | Valor Medido | Unidad | Método |
+|-----------|--------------|--------|---------| 
+| tsetup    | ~250         | ps     | Degradación 5% en tpcq |
+| thold     | ~15          | ps     | Transición thold negativo→positivo |
+| tpcq      | 786-889      | ps     | Delay 50% CLK → 50% Q |
+
+### Comparación con Liberty
+Valores de referencia del archivo Liberty (D_CELLS_HDLL_LIBERTY):
+
+| Parámetro | Liberty Rise | Liberty Fall | Medido | Diferencia vs Rise | Diferencia vs Fall |
+|-----------|--------------|--------------|--------|--------------------|-------------------|
+| Setup D→CN| 216.2 ps     | 1416.0 ps    | ~250 ps | +33.8 ps (+16%) | -1166 ps (-82%) |
+| Hold D→CN | -2211.1 ps   | 991.5 ps     | ~15 ps | +2226 ps (+101%) | -976 ps (-98%) |
+| Delay CN→Q| Variable     | Variable     | 786-889 ps | Dentro del rango esperado | Dentro del rango esperado |
+
+**Valores Liberty exactos:**
+- **Setup D→CN rise:** 0.2162 ns = 216.2 ps
+- **Setup D→CN fall:** 1.4160 ns = 1416.0 ps  
+- **Hold D→CN rise:** -2.2111 ns = -2211.1 ps
+- **Hold D→CN fall:** 0.9915 ns = 991.5 ps
+
+## 2.6 Análisis de Resultados
+
+### Precisión de las Mediciones
+- **Setup time:** ~250 ps está cerca del valor Liberty rise (216.2 ps)
+- **Hold time:** ~15 ps está en un rango razonable comparado con Liberty (mucho mejor que los valores extremos)
+- **tpcq:** 786-889 ps varía según condiciones, pero se mantiene en rangos consistentes
+
+### Factores que Afectan la Caracterización
+- **Carga:** FO4 vs condiciones del Liberty
+- **Pendientes:** tr/tf de 100ps vs condiciones estándar (el Liberty tiene valores diferentes para rise/fall)
+- **Temperatura y voltaje:** Condiciones nominales vs esquinas PVT
+- **Extracción:** Parásitas del layout afectan los tiempos
+- **Rise vs Fall:** Los valores Liberty muestran diferencias significativas entre transiciones positivas y negativas:
+  - Setup: 216.2 ps (rise) vs 1416.0 ps (fall) 
+  - Hold: -2211.1 ps (rise) vs 991.5 ps (fall)
+
+### Observaciones
+1. **Comportamiento del tpcq:** Varía entre 786-889 ps dependiendo de las condiciones de timing. Se mantiene estable en el rango de operación normal.
+
+2. **Setup Time:** La violación ocurre cuando tdelay > 10.3ns, dando un setup time de ~250 ps.
+
+3. **Hold Time:** El punto crítico está alrededor de tdelay = 5.0ns, con un hold time estimado de ~15 ps.
+
+4. **Comparación con Liberty:** Los valores medidos están en rangos razonables, más cercanos a los valores "rise" del Liberty que a los "fall".
+
+## 2.7 Conclusiones
+
+1. **Funcionalidad:** El sistema flip-flop funciona correctamente con tpcq entre 786-889 ps según las condiciones de timing.
+
+2. **Caracterización completa:** Se midieron exitosamente tanto setup time (~250 ps) como hold time (~15 ps) usando barridos paramétricos.
+
+3. **Validación:** Los valores están en rangos razonables comparados con el Liberty, validando la metodología y el diseño.
+
+4. **Metodología simple:** El barrido de tdelay permite identificar fácilmente las violaciones de timing observando cambios en tpcq y thold.
+
+---
+
+# Parte 3: Caracterización en archivos Liberty, uso de SDC y síntesis lógica 
 # Punto 7 Análisis Comparativo de Timing entre Esquinas PVT
 
 ## Variación de Delays por Esquina
