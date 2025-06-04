@@ -21,9 +21,13 @@ Se generó el layout del sistema cumpliendo con:
 - **Reloj en Metal 3:** Como especifica la tarea
 - **DRC y LVS:** Sin errores
 
+Layaout:
+
 ![Layout del Sistema](./figuras/imagen_layout_ff.png)
 
-![Vista Extraída (analog_extracted)](./figuras/imagen_extracted.png)
+Vista extraída:
+
+![Vista Extraída](./figuras/imagen_extracted.png)
 
 ## 2.2 Testbench para Caracterización
 
@@ -146,10 +150,14 @@ Valores de referencia del archivo Liberty (D_CELLS_HDLL_LIBERTY):
 
 ## 2.6 Análisis de Resultados
 
+
 ### Precisión de las Mediciones
 - **Setup time:** ~250 ps está cerca del valor Liberty rise (216.2 ps)
 - **Hold time:** ~15 ps está en un rango razonable comparado con Liberty (mucho mejor que los valores extremos)
 - **tpcq:** 786-889 ps varía según condiciones, pero se mantiene en rangos consistentes
+
+**⚠️ Nota importante sobre offset de medición:**
+Los valores de tsetup y thold obtenidos incluyen un offset significativo debido a que las mediciones se realizaron desde la salida de vpulse (fuente CLK) y no desde el nodo de entrada real del flip-flop. El retardo introducido por los inversores INHDLLX1 e INHDLLX4 en la cadena de entrada no fue compensado en estas mediciones, por lo que los valores reales de setup y hold time serían menores a los reportados.
 
 ### Factores que Afectan la Caracterización
 - **Carga:** FO4 vs condiciones del Liberty
@@ -159,6 +167,8 @@ Valores de referencia del archivo Liberty (D_CELLS_HDLL_LIBERTY):
 - **Rise vs Fall:** Los valores Liberty muestran diferencias significativas entre transiciones positivas y negativas:
   - Setup: 216.2 ps (rise) vs 1416.0 ps (fall) 
   - Hold: -2211.1 ps (rise) vs 991.5 ps (fall)
+
+
 
 ### Observaciones
 1. **Comportamiento del tpcq:** Varía entre 786-889 ps dependiendo de las condiciones de timing. Se mantiene estable en el rango de operación normal.
