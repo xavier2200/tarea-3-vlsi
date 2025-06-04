@@ -94,8 +94,11 @@ Como se puede observar son los resultados esperados, ya que:
 - Efectivamente el ancho de la salida es de 3 bits
 - Se incrementa en 1 por cada flanco de reloj
 - La frecuencia de operación del reloj es de 50Mhz 
+# Punto 11
 
 # Punto 12
+
+![image](./figuras/diagrama_estadpos.png)
 
 1. Inicialización
 
